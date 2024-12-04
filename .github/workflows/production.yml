@@ -45,6 +45,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Wait for PostgreSQL
+        run: |
+          until pg_isready -h postgres -p 5432; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 5
+          done
+
       - name: Run tests with Pytest
         env:
           MOCK_SMTP: true # Enable SMTP mocking
